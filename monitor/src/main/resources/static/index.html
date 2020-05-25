@@ -1,0 +1,42 @@
+<html>
+<head>
+    <style>
+        #messages {
+            text-align: left;
+            width: 50%;
+            padding: 1em;
+            border: 1px solid black;
+        }
+    </style>
+    <title>TEST WebSocket Client</title>
+</head>
+<body>
+<div class="container">
+	<div><p>Connected to Back End Web Socket</p></div>
+    <div id="readings" class="readings"></div>
+    <hr/>
+    <div class="input-fields">
+        <button id="getValues">Get Values</button>
+    </div>
+</div>
+</body>
+<script>
+    const messageWindow = document.getElementById("readings");
+	const socket = new WebSocket("ws://localhost:8080/cpuUtilization");
+
+    socket.onopen = function (event) {
+        addMessagetoWindow("Press the button to get CPU readings");
+    };
+	
+    socket.onmessage = function (event) {
+        addMessageToWindow(`${event.data}`);
+    };
+
+    	
+    
+   	function addMessageToWindow(message) {
+        messageWindow.innerHTML = `<div>${message}</div>`
+    }
+   	
+</script>
+</html>
