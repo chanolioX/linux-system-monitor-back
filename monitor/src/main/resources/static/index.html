@@ -13,7 +13,10 @@
 <body>
 <div class="container">
 	<div><p>Connected to Back End Web Socket</p></div>
+    <div><p>CPU Utilization</p></div>
     <div id="readings" class="readings"></div>
+    <div><p>CPU Average</p></div>
+    <div id="records" class="readings"></div>
     <hr/>
     <div class="input-fields">
         <button id="getValues">Get Values</button>
@@ -22,8 +25,11 @@
 </body>
 <script>
     const messageWindow = document.getElementById("readings");
-	const socket = new WebSocket("ws://localhost:8080/cpuUtilization");
-
+    const othermessageWindow = document.getElementById("records");
+	const socket = new WebSocket("ws://localhost:8080/cpuutilization");
+	const cpusocket = new WebSocket("ws://localhost:8080/cpuaverage");
+	
+	
     socket.onopen = function (event) {
         addMessagetoWindow("Press the button to get CPU readings");
     };
@@ -31,11 +37,20 @@
     socket.onmessage = function (event) {
         addMessageToWindow(`${event.data}`);
     };
-
-    	
     
    	function addMessageToWindow(message) {
         messageWindow.innerHTML = `<div>${message}</div>`
+    }
+    cpusocket.onopen = function (event) {
+        addOtherMessagetoWindow("Press the button to get CPU readings");
+    };
+	
+    cpusocket.onmessage = function (event) {
+        addOtherMessageToWindow(`${event.data}`);
+    };
+    
+   	function addOtherMessageToWindow(message) {
+        othermessageWindow.innerHTML = `<div>${message}</div>`
     }
    	
 </script>

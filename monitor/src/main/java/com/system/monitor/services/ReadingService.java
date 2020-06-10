@@ -11,5 +11,7 @@ public interface ReadingService{
 	Reading insert(Reading reading);
 
 	Optional<Reading> findById(Long id);
+	
+	
 
 }
