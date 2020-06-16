@@ -107,9 +107,6 @@ public class ResourceRecordCollector {
 
 
 
-
-
-
 	/**
 	 * A runnable class that runs the collector script in an infinite loop, inserting data to the DB and updating the last record for real time streaming through web socket
 	 * 

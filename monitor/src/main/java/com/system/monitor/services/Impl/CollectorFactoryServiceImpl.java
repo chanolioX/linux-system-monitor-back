@@ -73,18 +73,31 @@ public class CollectorFactoryServiceImpl implements CollectorFactoryService{
 	 * @return String PATH to the collector script. 
 	 */	
 	private String getCollectorScriptPath(String resourceName) {
+		
+		// Absolute path to Collector Script
 		String scriptPath = null;
-		ClassLoader classLoader = getClass().getClassLoader();
-		String internalPath = CollectorProperties.getCollectorConfigMapping().get(resourceName);
-		File file = new File(classLoader.getResource(internalPath).getFile());
 		
 		try {
+			// Class Loader used to get the script as a resource
+			ClassLoader classLoader = getClass().getClassLoader();
+		
+			// Script Path specified in applicatiion.properties
+			String internalPath = CollectorProperties.getCollectorConfigMapping().get(resourceName);
+		
+			// The Collector Script File
+			File file = new File(classLoader.getResource(internalPath).getFile());
+		
+		
+			// Get absolute path
 			scriptPath = file.getAbsolutePath();
+			
+			// Log resource and script path
 			if(log.isDebugEnabled()) log.debug("Getting Configuration: Resource: " + resourceName + ". Script Path: " + scriptPath);
 
 		}catch(NullPointerException e) {
 			e.printStackTrace();
 		}
+		
 		return scriptPath;
 	}
 }
