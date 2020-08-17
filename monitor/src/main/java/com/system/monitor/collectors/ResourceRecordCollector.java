@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.system.monitor.models.ResourceRecord;
 import com.system.monitor.services.ReadingService;
 import com.system.monitor.services.ResourceRecordService;
+import com.system.monitor.services.ThresholdMonitorService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -51,6 +52,12 @@ public class ResourceRecordCollector {
 	private ReadingService readingService;
 
 	/**
+	 * Service to monitor the values of the records
+	 */
+	private ThresholdMonitorService thresholdMonitorService;
+	
+	
+	/**
 	 * Last Record of the collection
 	 */
 	private @Getter ResourceRecord lastRecord = null;
@@ -74,12 +81,15 @@ public class ResourceRecordCollector {
 	public ResourceRecordCollector(String resourceName,
 						ResourceRecordService recordService,
 						ReadingService readingService,
+						ThresholdMonitorService thresholdMonitorService,
 						String scriptPath) {
 		
 		
 		this.resourceName = resourceName;
 		this.recordService = recordService;
 		this.readingService = readingService;
+		this.thresholdMonitorService = thresholdMonitorService;
+		
 		
 		Thread collectionThread = new Thread(new CollectionThread(scriptPath), "Collection Thread");
 		collectionThread.start();
@@ -175,7 +185,11 @@ public class ResourceRecordCollector {
 							
 							setParentRecord(lastRecord);
 							log.debug(getLastRecordAsJsonString());
-							
+							if(thresholdMonitorService.equals(null)) {
+								log.debug("Servicio null");
+							}else {
+								thresholdMonitorService.verifyRecord(lastRecord);
+							}
 
 						} else {
 

@@ -10,6 +10,7 @@ import com.system.monitor.config.CollectorConfiguration;
 import com.system.monitor.services.CollectorFactoryService;
 import com.system.monitor.services.ReadingService;
 import com.system.monitor.services.ResourceRecordService;
+import com.system.monitor.services.ThresholdMonitorService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,6 +48,13 @@ public class CollectorFactoryServiceImpl implements CollectorFactoryService{
 	@Autowired
 	private ReadingService readingService;
 
+
+	/**
+	 * The Threshold Monitor interact with monitoring service
+	 */
+	@Autowired
+	private ThresholdMonitorService thresholdMonitorService;
+	
 	
 	/**
 	 * Get the collector corresponding to the given resource.
@@ -61,6 +69,7 @@ public class CollectorFactoryServiceImpl implements CollectorFactoryService{
 				resourceName,
 				recordService,
 				readingService,
+				thresholdMonitorService,
 				scriptPath);
 	}
 

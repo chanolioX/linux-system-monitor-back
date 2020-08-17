@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import lombok.Data;
 
@@ -22,7 +24,8 @@ public class Rule {
 	/**
 	 * Resource Record that triggered this alert
 	 */
-	private Resource resourceName;
+	@OneToOne
+	private ResourceRecord resourceThreshold;
 	
 	/**
 	 * Priority of this alert 
@@ -30,19 +33,26 @@ public class Rule {
 	private AlertPriority priority;
 	
 	/**
-	 * Thresholds to compare the records against
+	 * Set of users that will receive a notification if an alert is triggered
 	 */
-	private Set<Reading> thresholds;
+	@OneToMany
+	private Set<User> alertRecipients;
 	
 	/**
 	 * Set of users that will receive a notification if an alert is triggered
 	 */
-	private Set<User> alertRecipients;
+	@OneToMany
+	private Set<Alert> alertsTrigerred;
 	
-	public Rule(Resource resourceName, AlertPriority priority, Set<Reading> thresholds, Set<User> alertRecipients) {
-		this.resourceName = resourceName;
+	
+	
+	public Rule(ResourceRecord resourceThreshold, AlertPriority priority, Set<User> alertRecipients) {
+		this.resourceThreshold = resourceThreshold;
 		this.priority = priority;
-		this.thresholds = thresholds;
 		this.alertRecipients = alertRecipients;
+	}
+	
+	public void newAlertTrigerred(Alert newAlert) {
+		alertsTrigerred.add(newAlert);
 	}
 }

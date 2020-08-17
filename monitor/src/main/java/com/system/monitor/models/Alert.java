@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import lombok.Data;
 
@@ -29,22 +31,19 @@ public class Alert {
 	/**
 	 * Resource Record that triggered this alert
 	 */
+	@OneToOne
 	private ResourceRecord record;
 	
 	/**
 	 * Rule that created this alert
 	 */
+	@ManyToOne
 	private Rule rule;
 	
 	/**
 	 * Description of the alert.
 	 */
 	private String description;
-	
-	/**
-	 * Priority of this alert 
-	 */
-	private AlertPriority priority;
 	
 	/*
 	 * Constructor for Alert Class
@@ -53,10 +52,10 @@ public class Alert {
 	 * @param rule 
 	 * @param priority
 	 */
-	public Alert(ResourceRecord record, Rule rule, AlertPriority priority) {
+	public Alert(ResourceRecord record, Rule rule, String description) {
 		this.record = record;
 		this.rule = rule;
-		this.priority = priority;		
+		this.description = description;
 	}
 }
  

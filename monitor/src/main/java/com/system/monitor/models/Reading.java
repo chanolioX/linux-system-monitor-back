@@ -1,11 +1,6 @@
 package com.system.monitor.models;
 
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,6 +17,7 @@ import lombok.Data;
  */
 @Data
 @Entity
+@Table(name = "readings")
 public class Reading {
 	
 	/**
